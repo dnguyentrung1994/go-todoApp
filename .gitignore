@@ -1,3 +1,3 @@
 logs/
-env
+.env
 go-todoApp.exe
