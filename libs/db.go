@@ -1,0 +1,37 @@
+package libs
+
+import (
+	"fmt"
+
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+)
+
+type Database struct {
+	*gorm.DB
+}
+
+func NewDatabase(env Env, logger Logger) Database {
+	username := env.DBUsername
+	password := env.DBPassword
+	host := env.DBHost
+	port := env.DBPort
+	dbname := env.DBName
+
+	url := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", username, password, host, port, dbname)
+
+	db, err := gorm.Open(postgres.Open(url), &gorm.Config{
+		Logger: logger.GetGormLogger(),
+	})
+
+	if err != nil {
+		logger.Info("Url: ", url)
+		logger.Panic(err)
+	}
+
+	logger.Info("Database connection established")
+
+	return Database{
+		DB: db,
+	}
+}
