@@ -6,21 +6,21 @@ import (
 	"gorm.io/gorm"
 )
 
-type UserAddressRepository struct {
+type TeamRepository struct {
 	libs.Database
 	logger libs.Logger
 }
 
 // NewUserRepository creates a new user repository
-func NewUserAddressRepository(db libs.Database, logger libs.Logger) UserAddressRepository {
-	return UserAddressRepository{
+func NewTeamRepository(db libs.Database, logger libs.Logger) UserRepository {
+	return UserRepository{
 		Database: db,
 		logger:   logger,
 	}
 }
 
 // WithTrx enables repository with transaction
-func (r UserAddressRepository) WithTrx(trxHandle *gorm.DB) UserAddressRepository {
+func (r TeamRepository) WithTrx(trxHandle *gorm.DB) TeamRepository {
 	if trxHandle == nil {
 		r.logger.Error("Transaction Database not found in gin context. ")
 		return r

@@ -29,6 +29,10 @@ func (s UserService) GetOneUser(username string) (user entities.User, err error)
 	return user, s.repository.Where("username = ?", username).First(&user).Error
 }
 
+// func (s UserService) GetUserByLocation() (users []entities.User, err error){
+// 	return users, s.repository.Joins("Address", s.repository.DB.Where(""))
+// }
+
 func (s UserService) GetAllUser(username string) (users []entities.User, err error) {
 	return users, s.repository.Find(&users).Error
 }

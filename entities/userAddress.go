@@ -5,9 +5,8 @@ import (
 	"gorm.io/gorm"
 )
 
-type Address struct {
+type UserAddress struct {
 	ID         uuid.UUID `json:"-"`
-	UserId     uuid.UUID `json:"-" gorm:"not null"`
 	Prefecture string    `json:"prefecture" gorm:"not null"`
 	City       string    `json:"city" gorm:"not null"`
 	District   string    `json:"district" gorm:"not null"`
@@ -15,7 +14,7 @@ type Address struct {
 	Additional string    `json:"additional"`
 }
 
-func (address *Address) BeforeCreate(scope *gorm.DB) (err error) {
+func (address *UserAddress) BeforeCreate(scope *gorm.DB) (err error) {
 	address.ID = uuid.New()
 
 	return
