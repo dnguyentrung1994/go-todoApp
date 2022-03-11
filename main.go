@@ -1,20 +1,16 @@
 package main
 
 import (
-	"fmt"
+	"go-todoApp/bootstrap"
+	"go-todoApp/libs"
 
-	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
+	"go.uber.org/fx"
 )
 
 func main() {
-	fmt.Println("hello")
+	godotenv.Load()
 
-	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-
-	r.Run()
+	logger := libs.GetLogger().GetFxLogger()
+	fx.New(bootstrap.Module, fx.Logger(logger)).Run()
 }

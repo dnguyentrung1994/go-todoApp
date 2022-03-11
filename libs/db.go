@@ -18,14 +18,14 @@ func NewDatabase(env Env, logger Logger) Database {
 	port := env.DBPort
 	dbname := env.DBName
 
-	url := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", username, password, host, port, dbname)
+	dns := fmt.Sprintf("user=%s password=%s host=%s port=%s dbname=%s", username, password, host, port, dbname)
 
-	db, err := gorm.Open(postgres.Open(url), &gorm.Config{
+	db, err := gorm.Open(postgres.Open(dns), &gorm.Config{
 		Logger: logger.GetGormLogger(),
 	})
 
 	if err != nil {
-		logger.Info("Url: ", url)
+		logger.Info("Url: ", dns)
 		logger.Panic(err)
 	}
 
