@@ -11,9 +11,9 @@ type TeamRepository struct {
 	logger libs.Logger
 }
 
-// NewUserRepository creates a new user repository
-func NewTeamRepository(db libs.Database, logger libs.Logger) UserRepository {
-	return UserRepository{
+// NewTeamRepository creates a new user repository
+func NewTeamRepository(db libs.Database, logger libs.Logger) TeamRepository {
+	return TeamRepository{
 		Database: db,
 		logger:   logger,
 	}

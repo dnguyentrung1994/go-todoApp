@@ -15,7 +15,7 @@ type UserRoutes struct {
 
 func (s UserRoutes) SetUp() {
 	s.logger.Info("setting up routes for user-related functionalities...")
-	api := s.handler.Gin.Group("/api/user").Use(s.authMiddleware.Handler())
+	api := s.handler.Gin.Group("/api/user")
 	{
 		api.POST("/", s.userController.CreateNewUser)
 	}

@@ -7,6 +7,7 @@ import (
 
 type UserAddress struct {
 	ID         uuid.UUID `json:"-"`
+	UserID     uuid.UUID `json:"-"`
 	Prefecture string    `json:"prefecture" gorm:"not null"`
 	City       string    `json:"city" gorm:"not null"`
 	District   string    `json:"district" gorm:"not null"`

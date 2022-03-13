@@ -9,6 +9,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
+
+	userValidator "go-todoApp/validators/userValidator"
 )
 
 type UserController struct {
@@ -26,7 +28,9 @@ func NewUserController(userService services.UserService, logger libs.Logger) Use
 
 //creates new user and associated user address(es)
 func (u UserController) CreateNewUser(c *gin.Context) {
-	user := entities.User{}
+	//validator for creating new user
+	user := userValidator.CreateUser{}
+	// user := entities.User{}
 	trxHandle := c.MustGet(constants.DBTransaction).(*gorm.DB)
 
 	if err := c.ShouldBindJSON(&user); err != nil {
@@ -36,7 +40,16 @@ func (u UserController) CreateNewUser(c *gin.Context) {
 		})
 		return
 	}
-	if err := u.service.WithTrx(trxHandle).CreateUser(user); err != nil {
+	if validationErrors := userValidator.ValidateUserCreation(user); len(validationErrors) != 0 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message":     "Invalid User Data",
+			"error lists": validationErrors,
+		})
+	}
+	validatedUserData := entities.User{
+		Username: user.Username,
+	}
+	if err := u.service.WithTrx(trxHandle).CreateUser(validatedUserData); err != nil {
 		u.logger.Error(err)
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
